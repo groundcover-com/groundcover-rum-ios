@@ -1,0 +1,288 @@
+import Foundation
+import Foundation/*.Bundle*/
+import Foundation/*.ProcessInfo*/
+import Foundation/*.URL*/
+import GroundcoverRumBoot
+import KSCrashRecording
+import ObjectiveC
+import Swift
+import SwiftUI
+import UIKit.UIGestureRecognizerSubclass
+import UIKit
+public enum Groundcover {
+  public static func start(_ config: GroundcoverRum.GroundcoverConfig) throws
+  public static func identifyUser(_ user: GroundcoverRum.RumUser)
+  public static func updateConfig(_ update: GroundcoverRum.GroundcoverConfigUpdate)
+  public static func sendCustomEvent(_ name: Swift.String, _ attributes: [Swift.String : Any] = [:])
+  @inline(never) public static func captureError(_ error: any Swift.Error, metadata: [Swift.String : Any]? = nil)
+  public static let logger: GroundcoverRum.RumLogger
+  public static var sessionId: Swift.String {
+    get
+  }
+  public static func setSessionId(_ id: Swift.String? = nil) async
+  public static func startNavigation(_ screen: Swift.String, key: Swift.String = "", metadata: [Swift.String : Any]? = nil)
+  public static func endNavigation(_ metadata: [Swift.String : Any]? = nil)
+  public static func stopNavigationTracking()
+  public static func markAppInteractive()
+}
+public struct RumLogger : Swift.Sendable {
+  public func log(_ message: Swift.String, _ attributes: [Swift.String : Any]? = nil)
+  public func info(_ message: Swift.String, _ attributes: [Swift.String : Any]? = nil)
+  public func warn(_ message: Swift.String, _ attributes: [Swift.String : Any]? = nil)
+  public func error(_ message: Swift.String, _ attributes: [Swift.String : Any]? = nil)
+  public func debug(_ message: Swift.String, _ attributes: [Swift.String : Any]? = nil)
+  public func trace(_ message: Swift.String, _ attributes: [Swift.String : Any]? = nil)
+}
+public struct GroundcoverInitError : Foundation.LocalizedError, Swift.CustomStringConvertible {
+  public let message: Swift.String
+  public init(_ message: Swift.String)
+  public var errorDescription: Swift.String? {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+}
+public struct GroundcoverConfig {
+  public var apiKey: Swift.String
+  public var dsn: Swift.String
+  public var cluster: Swift.String
+  public var environment: Swift.String
+  public var appId: Swift.String
+  public var namespace: Swift.String?
+  public var releaseId: Swift.String?
+  public var user: GroundcoverRum.RumUser?
+  public var sessionId: Swift.String?
+  public var options: GroundcoverRum.GroundcoverOptions
+  public init(apiKey: Swift.String, dsn: Swift.String, cluster: Swift.String, environment: Swift.String, appId: Swift.String, namespace: Swift.String? = nil, releaseId: Swift.String? = nil, user: GroundcoverRum.RumUser? = nil, sessionId: Swift.String? = nil, options: GroundcoverRum.GroundcoverOptions = GroundcoverOptions())
+}
+public struct GroundcoverOptions {
+  public var enabledEvents: [GroundcoverRum.RumEventName]?
+  public var sessionSampleRate: Swift.Double?
+  public var sessionMaxDuration: Foundation.TimeInterval?
+  public var debug: Swift.Bool?
+  public var excludedUrls: [GroundcoverRum.URLPattern]?
+  public var beforeSend: GroundcoverRum.BeforeSend?
+  public var enrichEvent: GroundcoverRum.EnrichEvent?
+  public var privacy: GroundcoverRum.PrivacyOptions?
+  public var tracing: GroundcoverRum.TracingOptions?
+  public var transport: GroundcoverRum.TransportOptions?
+  public var appVersion: Swift.String?
+  public var appBuild: Swift.String?
+  public var native: GroundcoverRum.NativeOptions?
+  public var hooks: GroundcoverRum.NativeHooks
+  public init(enabledEvents: [GroundcoverRum.RumEventName]? = nil, sessionSampleRate: Swift.Double? = nil, sessionMaxDuration: Foundation.TimeInterval? = nil, debug: Swift.Bool? = nil, excludedUrls: [GroundcoverRum.URLPattern]? = nil, beforeSend: GroundcoverRum.BeforeSend? = nil, enrichEvent: GroundcoverRum.EnrichEvent? = nil, privacy: GroundcoverRum.PrivacyOptions? = nil, tracing: GroundcoverRum.TracingOptions? = nil, transport: GroundcoverRum.TransportOptions? = nil, appVersion: Swift.String? = nil, appBuild: Swift.String? = nil, native: GroundcoverRum.NativeOptions? = nil, hooks: GroundcoverRum.NativeHooks = NativeHooks())
+}
+public enum RumEventName : Swift.String, Swift.CaseIterable {
+  case interaction
+  case network
+  case logs
+  case navigation
+  case exceptions
+  case crashes
+  case hangs
+  case vitals
+  case appStart
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GroundcoverRum.RumEventName]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GroundcoverRum.RumEventName] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct NativeHooks {
+  public var viewControllers: Swift.Bool
+  public var touches: Swift.Bool
+  public var textFields: Swift.Bool
+  public var urlSession: Swift.Bool
+  public init(viewControllers: Swift.Bool = true, touches: Swift.Bool = true, textFields: Swift.Bool = true, urlSession: Swift.Bool = true)
+}
+public enum URLPattern : Swift.ExpressibleByStringLiteral {
+  case string(Swift.String)
+  case regex(Foundation.NSRegularExpression)
+  public init(stringLiteral value: Swift.String)
+  public typealias ExtendedGraphemeClusterLiteralType = Swift.String
+  public typealias StringLiteralType = Swift.String
+  public typealias UnicodeScalarLiteralType = Swift.String
+}
+public enum PrivacyLevel : Swift.String {
+  case maskSensitive
+  case maskAll
+  case allow
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum RedactKind : Swift.String {
+  case requestBody
+  case responseBody
+  case query
+  case header
+  case log
+  case error
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct RedactField {
+  public var key: Swift.String
+  public var value: Any?
+  public var path: [Swift.String]
+  public var kind: GroundcoverRum.RedactKind
+  public var sensitive: Swift.Bool
+  public init(key: Swift.String, value: Any?, path: [Swift.String], kind: GroundcoverRum.RedactKind, sensitive: Swift.Bool)
+}
+public typealias Redactor = @Sendable (GroundcoverRum.RedactField) throws -> Any?
+public typealias BeforeSend = @Sendable (GroundcoverRum.RumEvent) throws -> Swift.Bool
+public typealias EnrichEvent = @Sendable (GroundcoverRum.RumEvent) throws -> GroundcoverRum.RumEvent
+public struct PrivacyOptions {
+  public var level: GroundcoverRum.PrivacyLevel?
+  public var maskNetworkBodies: Swift.Bool?
+  public var maskNetworkQueryParams: Swift.Bool?
+  public var maskLogs: Swift.Bool?
+  public var maskErrors: Swift.Bool?
+  public var sensitiveKeys: [Swift.String]?
+  public var redact: GroundcoverRum.Redactor?
+  public var maskInteractionLabels: Swift.Bool?
+  public init(level: GroundcoverRum.PrivacyLevel? = nil, maskNetworkBodies: Swift.Bool? = nil, maskNetworkQueryParams: Swift.Bool? = nil, maskLogs: Swift.Bool? = nil, maskErrors: Swift.Bool? = nil, sensitiveKeys: [Swift.String]? = nil, redact: GroundcoverRum.Redactor? = nil, maskInteractionLabels: Swift.Bool? = nil)
+}
+public struct TracingOrigin {
+  public var name: Swift.String
+  public var value: Swift.String
+  public init(name: Swift.String, value: Swift.String)
+}
+public struct TracingOptions {
+  public var propagationUrls: [Swift.String]?
+  public var propagationHeaders: [Swift.String]?
+  public var traceIdHeaderName: Swift.String?
+  public var spanIdHeaderName: Swift.String?
+  public var origin: GroundcoverRum.TracingOrigin?
+  public init(propagationUrls: [Swift.String]? = nil, propagationHeaders: [Swift.String]? = nil, traceIdHeaderName: Swift.String? = nil, spanIdHeaderName: Swift.String? = nil, origin: GroundcoverRum.TracingOrigin? = nil)
+}
+public struct TransportOptions {
+  public var batchSize: Swift.Int?
+  public var batchTimeout: Foundation.TimeInterval?
+  public var compression: Swift.Bool?
+  public init(batchSize: Swift.Int? = nil, batchTimeout: Foundation.TimeInterval? = nil, compression: Swift.Bool? = nil)
+}
+public struct NativeOptions {
+  public var hangThreshold: Foundation.TimeInterval?
+  public var vitalsMaxSegment: Foundation.TimeInterval?
+  public var tti: GroundcoverRum.TtiMode?
+  public init(hangThreshold: Foundation.TimeInterval? = nil, vitalsMaxSegment: Foundation.TimeInterval? = nil, tti: GroundcoverRum.TtiMode? = nil)
+}
+public enum TtiMode : Swift.String {
+  case auto
+  case manual
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct RumUser {
+  public var id: Swift.String?
+  public var email: Swift.String?
+  public var name: Swift.String?
+  public var role: Swift.String?
+  public var organization: Swift.String?
+  public var properties: [Swift.String : Any]?
+  public init(id: Swift.String? = nil, email: Swift.String? = nil, name: Swift.String? = nil, role: Swift.String? = nil, organization: Swift.String? = nil, properties: [Swift.String : Any]? = nil)
+}
+public struct GroundcoverConfigUpdate {
+  public var apiKey: Swift.String?
+  public var dsn: Swift.String?
+  public var cluster: Swift.String?
+  public var environment: Swift.String?
+  public var namespace: Swift.String?
+  public var releaseId: Swift.String?
+  public var user: GroundcoverRum.UserUpdate?
+  public var options: GroundcoverRum.GroundcoverOptionsUpdate?
+  public init(apiKey: Swift.String? = nil, dsn: Swift.String? = nil, cluster: Swift.String? = nil, environment: Swift.String? = nil, namespace: Swift.String? = nil, releaseId: Swift.String? = nil, user: GroundcoverRum.UserUpdate? = nil, options: GroundcoverRum.GroundcoverOptionsUpdate? = nil)
+}
+public enum UserUpdate {
+  case set(GroundcoverRum.RumUser)
+  case clear
+}
+public struct GroundcoverOptionsUpdate {
+  public var sessionMaxDuration: Foundation.TimeInterval?
+  public var debug: Swift.Bool?
+  public var excludedUrls: [GroundcoverRum.URLPattern]?
+  public var beforeSend: GroundcoverRum.BeforeSend?
+  public var enrichEvent: GroundcoverRum.EnrichEvent?
+  public var privacy: GroundcoverRum.PrivacyOptions?
+  public var tracing: GroundcoverRum.TracingOptions?
+  public var transport: GroundcoverRum.TransportOptions?
+  public init(sessionMaxDuration: Foundation.TimeInterval? = nil, debug: Swift.Bool? = nil, excludedUrls: [GroundcoverRum.URLPattern]? = nil, beforeSend: GroundcoverRum.BeforeSend? = nil, enrichEvent: GroundcoverRum.EnrichEvent? = nil, privacy: GroundcoverRum.PrivacyOptions? = nil, tracing: GroundcoverRum.TracingOptions? = nil, transport: GroundcoverRum.TransportOptions? = nil)
+}
+public enum GroundcoverRumTesting {
+  public static func backdateLastActivity(by interval: Foundation.TimeInterval)
+  public static func backdateSessionStart(by interval: Foundation.TimeInterval)
+  public static func forgetSession()
+  public static func triggerTestCrash()
+  public static func blockMainThread(for duration: Foundation.TimeInterval)
+  public static func reset()
+}
+extension GroundcoverRum.Groundcover {
+  public static func startNetworkRecording(_ request: inout Foundation.URLRequest) -> GroundcoverRum.GroundcoverNetworkRecording?
+}
+@_hasMissingDesignatedInitializers final public class GroundcoverNetworkRecording : @unchecked Swift.Sendable {
+  final public func finish(response: Foundation.URLResponse?, data: Foundation.Data?, error: (any Swift.Error)?)
+  @objc deinit
+}
+extension Foundation.URLSession {
+  public func groundcoverDataTask(with request: Foundation.URLRequest, completionHandler: @escaping @Sendable (Foundation.Data?, Foundation.URLResponse?, (any Swift.Error)?) -> Swift.Void) -> Foundation.URLSessionDataTask
+  public func groundcoverDataTask(with request: Foundation.URLRequest) -> Foundation.URLSessionDataTask
+  public func groundcoverData(for request: Foundation.URLRequest) async throws -> (Foundation.Data, Foundation.URLResponse)
+}
+@objc @_inheritsConvenienceInitializers open class GroundcoverURLSessionDelegate : ObjectiveC.NSObject, Foundation.URLSessionDataDelegate {
+  @objc open func urlSession(_ session: Foundation.URLSession, dataTask: Foundation.URLSessionDataTask, didReceive data: Foundation.Data)
+  @objc open func urlSession(_ session: Foundation.URLSession, task: Foundation.URLSessionTask, didCompleteWithError error: (any Swift.Error)?)
+  @objc override dynamic public init()
+  @objc deinit
+}
+final public class RumEvent {
+  final public let type: Swift.String
+  final public let id: Swift.String
+  final public var spanId: Swift.String
+  final public var parentSpanId: Swift.String?
+  final public var traceId: Swift.String?
+  final public var timestamp: Swift.Int64?
+  final public var startTimestamp: Swift.Int64?
+  final public var endTimestamp: Swift.Int64?
+  final public var spanName: Swift.String?
+  final public var attributes: [Swift.String : Any]
+  public init(type: Swift.String, id: Swift.String, spanId: Swift.String, parentSpanId: Swift.String? = nil, traceId: Swift.String? = nil, timestamp: Swift.Int64? = nil, startTimestamp: Swift.Int64? = nil, endTimestamp: Swift.Int64? = nil, spanName: Swift.String? = nil, attributes: [Swift.String : Any] = [:])
+  @objc deinit
+}
+extension UIKit.UIView {
+  @objc @_Concurrency.MainActor @preconcurrency dynamic public var groundcoverPrivate: Swift.Bool {
+    @objc get
+    @objc set
+  }
+}
+extension SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public func groundcoverScreen(_ name: Swift.String, key: Swift.String? = nil) -> some SwiftUICore.View
+  
+  @_Concurrency.MainActor @preconcurrency public func groundcoverPrivate(_ isPrivate: Swift.Bool = true) -> some SwiftUICore.View
+  
+}
+extension GroundcoverRum.RumEventName : Swift.Equatable {}
+extension GroundcoverRum.RumEventName : Swift.Hashable {}
+extension GroundcoverRum.RumEventName : Swift.RawRepresentable {}
+extension GroundcoverRum.PrivacyLevel : Swift.Equatable {}
+extension GroundcoverRum.PrivacyLevel : Swift.Hashable {}
+extension GroundcoverRum.PrivacyLevel : Swift.RawRepresentable {}
+extension GroundcoverRum.RedactKind : Swift.Equatable {}
+extension GroundcoverRum.RedactKind : Swift.Hashable {}
+extension GroundcoverRum.RedactKind : Swift.RawRepresentable {}
+extension GroundcoverRum.TtiMode : Swift.Equatable {}
+extension GroundcoverRum.TtiMode : Swift.Hashable {}
+extension GroundcoverRum.TtiMode : Swift.RawRepresentable {}

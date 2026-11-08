@@ -1,0 +1,14 @@
+import GroundcoverRum
+import Logging
+import Swift
+public struct GroundcoverLogHandler : Logging.LogHandler {
+  public let label: Swift.String
+  public var metadata: Logging.Logger.Metadata
+  public var logLevel: Logging.Logger.Level
+  public init(label: Swift.String)
+  public subscript(metadataKey key: Swift.String) -> Logging.Logger.Metadata.Value? {
+    get
+    set
+  }
+  public func log(level: Logging.Logger.Level, message: Logging.Logger.Message, metadata: Logging.Logger.Metadata?, source: Swift.String, file: Swift.String, function: Swift.String, line: Swift.UInt)
+}

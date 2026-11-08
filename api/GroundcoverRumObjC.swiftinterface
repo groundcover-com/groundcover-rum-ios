@@ -1,0 +1,121 @@
+import Foundation
+import GroundcoverRum
+import Swift
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(Groundcover) final public class GCRum : ObjectiveC.NSObject {
+  @objc(startWithConfig:error:) public static func start(config: GroundcoverRumObjC.GCRumConfig) throws
+  @objc public static func identifyUser(_ user: GroundcoverRumObjC.GCRumUser)
+  @objc public static func clearUser()
+  @objc(sendCustomEvent:attributes:) public static func sendCustomEvent(_ name: Swift.String, attributes: [Swift.String : Any]?)
+  @objc(captureError:metadata:) @inline(never) public static func captureError(_ error: Foundation.NSError, metadata: [Swift.String : Any]?)
+  @objc(logWithLevel:message:attributes:) public static func log(level: GroundcoverRumObjC.GCRumLogLevel, message: Swift.String, attributes: [Swift.String : Any]?)
+  @objc public static var sessionId: Swift.String {
+    @objc get
+  }
+  @objc(setSessionId:completion:) public static func setSessionId(_ id: Swift.String?, completion: (() -> Swift.Void)?)
+  @objc(startNavigation:key:metadata:) public static func startNavigation(_ screen: Swift.String, key: Swift.String?, metadata: [Swift.String : Any]?)
+  @objc(endNavigation:) public static func endNavigation(_ metadata: [Swift.String : Any]?)
+  @objc public static func stopNavigationTracking()
+  @objc public static func markAppInteractive()
+  @objc deinit
+}
+@objc(GroundcoverLogLevel) public enum GCRumLogLevel : Swift.Int {
+  case log
+  case info
+  case warn
+  case error
+  case debug
+  case trace
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc(GroundcoverConfig) final public class GCRumConfig : ObjectiveC.NSObject {
+  @objc final public var apiKey: Swift.String
+  @objc final public var dsn: Swift.String
+  @objc final public var cluster: Swift.String
+  @objc final public var environment: Swift.String
+  @objc final public var appId: Swift.String
+  @objc final public var namespaceName: Swift.String?
+  @objc final public var releaseId: Swift.String?
+  @objc final public var user: GroundcoverRumObjC.GCRumUser?
+  @objc final public var sessionId: Swift.String?
+  @objc final public var enabledEvents: [Swift.String]?
+  @objc final public var sessionSampleRate: Foundation.NSNumber?
+  @objc final public var sessionMaxDuration: Foundation.NSNumber?
+  @objc final public var debug: Foundation.NSNumber?
+  @objc final public var excludedUrls: [Any]?
+  @objc final public var privacyLevel: GroundcoverRumObjC.GCRumPrivacyLevel
+  @objc final public var sensitiveKeys: [Swift.String]?
+  @objc final public var maskInteractionLabels: Foundation.NSNumber?
+  @objc final public var beforeSend: ((GroundcoverRumObjC.GCRumEvent) -> Swift.Bool)?
+  @objc final public var enrichEvent: ((GroundcoverRumObjC.GCRumEvent) -> Swift.Void)?
+  @objc final public var propagationUrls: [Swift.String]?
+  @objc final public var batchSize: Foundation.NSNumber?
+  @objc final public var batchTimeout: Foundation.NSNumber?
+  @objc final public var compression: Foundation.NSNumber?
+  @objc final public var appVersion: Swift.String?
+  @objc final public var appBuild: Swift.String?
+  @objc final public var hangThreshold: Foundation.NSNumber?
+  @objc final public var vitalsMaxSegment: Foundation.NSNumber?
+  @objc final public var manualTimeToInteractive: Swift.Bool
+  @objc final public var viewControllerHook: Swift.Bool
+  @objc final public var touchesHook: Swift.Bool
+  @objc final public var textFieldsHook: Swift.Bool
+  @objc final public var urlSessionHook: Swift.Bool
+  @objc public init(apiKey: Swift.String, dsn: Swift.String, cluster: Swift.String, environment: Swift.String, appId: Swift.String)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(GroundcoverEvent) final public class GCRumEvent : ObjectiveC.NSObject {
+  @objc final public var type: Swift.String {
+    @objc get
+  }
+  @objc final public var eventId: Swift.String {
+    @objc get
+  }
+  @objc final public var timestamp: Foundation.NSNumber? {
+    @objc get
+  }
+  @objc final public var attributes: [Swift.String : Any] {
+    @objc get
+    @objc set
+  }
+  @objc deinit
+}
+@objc(GroundcoverPrivacyLevel) public enum GCRumPrivacyLevel : Swift.Int {
+  case `default`
+  case maskSensitive
+  case maskAll
+  case allow
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc(GroundcoverUser) final public class GCRumUser : ObjectiveC.NSObject {
+  @objc final public var id: Swift.String?
+  @objc final public var email: Swift.String?
+  @objc final public var name: Swift.String?
+  @objc final public var role: Swift.String?
+  @objc final public var organization: Swift.String?
+  @objc final public var properties: [Swift.String : Any]?
+  @objc public init(id: Swift.String?)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(GroundcoverTesting) final public class GCRumTesting : ObjectiveC.NSObject {
+  @objc public static func backdateLastActivity(by seconds: Foundation.TimeInterval)
+  @objc public static func backdateSessionStart(by seconds: Foundation.TimeInterval)
+  @objc public static func forgetSession()
+  @objc public static func triggerTestCrash()
+  @objc public static func blockMainThread(for seconds: Foundation.TimeInterval)
+  @objc public static func reset()
+  @objc deinit
+}
+extension GroundcoverRumObjC.GCRumLogLevel : Swift.Equatable {}
+extension GroundcoverRumObjC.GCRumLogLevel : Swift.Hashable {}
+extension GroundcoverRumObjC.GCRumLogLevel : Swift.RawRepresentable {}
+extension GroundcoverRumObjC.GCRumPrivacyLevel : Swift.Equatable {}
+extension GroundcoverRumObjC.GCRumPrivacyLevel : Swift.Hashable {}
+extension GroundcoverRumObjC.GCRumPrivacyLevel : Swift.RawRepresentable {}
