@@ -148,12 +148,11 @@ final class TouchObserver {
 
     /// Whether `touch` went down as a keystroke: presence, never a tap, whose position would spell
     /// what was typed. The keyboard's window (`UIRemoteKeyboardWindow`), in the app's process on
-    /// some releases as Datadog's SDK finds it, holds the system keyboard and its prediction bar,
-    /// the first responder's input view (a custom keypad) and its input accessory view. Only a
-    /// touch inside the accessory view, the app's own (a composer's Send, a toolbar's Done), is a
-    /// tap like any other; anything else there is a keystroke, so a view the SDK doesn't know, such
-    /// as a prediction naming the word being typed, is never read. `responder` is read only for a
-    /// touch in that window.
+    /// some releases, holds the system keyboard and its prediction bar, the first responder's input
+    /// view (a custom keypad) and its input accessory view. Only a touch inside the accessory view,
+    /// the app's own (a composer's Send, a toolbar's Done), is a tap like any other; anything else
+    /// there is a keystroke, so a view the SDK doesn't know, such as a prediction naming the word
+    /// being typed, is never read. `responder` is read only for a touch in that window.
     static func isKeystroke(_ touch: UITouch, responder: @autoclosure () -> UIResponder?) -> Bool {
         guard let window = touch.window, NSStringFromClass(type(of: window)).contains("Keyboard")
         else { return false }

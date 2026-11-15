@@ -131,7 +131,7 @@ final class GCRumAppStartTracker {
         lock.lock()
         let handler = onAppStart
         // Dropped rather than evicting the oldest: the cold start is the first thing in here and
-        // the most valuable, so a buffer that is somehow full must not lose it to warm starts.
+        // the most valuable, so a buffer that is somehow full must not lose it to hot starts.
         if handler == nil && pending.count < Self.maxPending { pending.append(start) }
         lock.unlock()
 

@@ -358,10 +358,9 @@ final class GCRumEngine {
     ///
     /// It also covers the teardown ordering: React's `invalidate()` calls `stop()` before tearing
     /// the bridge down, so a block that arrives during teardown fails this guard and never reaches
-    /// `sendEvent`. What it does not cover is a block already PAST the guard when `invalidate()`
-    /// runs concurrently; closing that would mean serializing emission and invalidation on one
-    /// queue owned by the module, which is a change to the bridge's threading contract rather than
-    /// to this method.
+    /// `sendEvent`. A block already PAST the guard when `invalidate()` runs concurrently is outside
+    /// what this method can order: only serializing emission and invalidation on one queue owned by
+    /// the module would cover it, and that is the bridge's threading contract, not this method's.
     private func emitHang(startedAtMs: Double, durationMs: Double, generation: UInt64) {
         queue.async { [weak self] in
             guard let self, self.isCurrentRun(generation) else { return }

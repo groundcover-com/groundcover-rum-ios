@@ -4,7 +4,7 @@ import UIKit
 let sdkName = "groundcover-rum-ios"
 
 /// The SDK's version, as sessions report it. The release sets it.
-let sdkVersion = "0.0.1-rc.0"
+let sdkVersion = "0.0.1-rc.1"
 
 /// The session envelope's device part, in the React Native SDK's shape (`source`, `os`, `device`,
 /// `app`), plus `sdk`, which tells native sessions from RN and Flutter ones under the shared

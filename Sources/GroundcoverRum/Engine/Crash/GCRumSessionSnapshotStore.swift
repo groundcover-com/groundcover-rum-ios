@@ -85,9 +85,9 @@ final class GCRumSessionSnapshotStore {
     /// `sessionAttributes` a live batch carries — whatever `identifyUser` was given, often
     /// an email — and Application Support is backed up by default.
     ///
-    /// Excluded rather than moved to Caches (where Sentry and Datadog keep theirs),
-    /// because the OS may evict Caches under disk pressure and destroy crash reports that
-    /// have not reached the network. Excluding keeps the durability and needs no migration.
+    /// Excluded rather than moved to Caches, because the OS may evict Caches under disk
+    /// pressure and destroy crash reports that have not reached the network. Excluding keeps
+    /// the durability and needs no migration.
     ///
     /// Applied on EVERY init, not only at creation: `createDirectory` is a no-op once the
     /// directory exists, so applying this only at creation would miss any directory that

@@ -1,7 +1,8 @@
 // Reading an event's own occurrence time back off the event. Only top-level fields count, and
 // both must be read: a network event has a `startTimestamp` and no `timestamp`, every other event
-// the reverse. Attributes are off limits: a navigation keeps a `start_timestamp` there in
-// milliseconds, which read as nanoseconds lands in 1970.
+// the reverse. Attributes are off limits: a navigation's `start_timestamp` there is when the screen
+// it left became current, which can predate the session, and an app's own attributes carry times
+// in any unit.
 
 /// Whether `value` is a time to trust: inside (nowNs - maxAgeNs, nowNs].
 ///

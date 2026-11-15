@@ -95,7 +95,7 @@ final class GCRumFrameTracker {
     }
 
     /// Feed a hang the frame sampler could not see into the open segment as a synthetic frozen
-    /// frame, so iOS's `frames_frozen` stops under-reporting hangs. The sampler is a main-thread
+    /// frame, so the hang is counted in iOS's `frames_frozen`. The sampler is a main-thread
     /// CADisplayLink, so a main-thread stall is a GAP it never records; the hang watchdog runs on
     /// its own thread, catches every hang, and calls this. Hops to the aggregator's thread, then
     /// resets the frame clock so the natural giant recovery-gap frame is not ALSO counted — the

@@ -28,10 +28,10 @@ final class GCRumCrashReporter {
     /// capture that is running.
     ///
     /// A flag rather than a catch on the error, because "installed by us" and "installed
-    /// by someone else" must differ: when another KSCrash-based SDK (Embrace, for one)
-    /// owns the singleton, [harvest] DELETES the reports it reads, so harvesting a store we
-    /// do not own would destroy another SDK's crashes. Sentry (its own SentryCrash fork) and
-    /// Crashlytics don't use KSCrash: they install their own handlers and chain to ours.
+    /// by someone else" must differ: when another KSCrash-based reporter owns the singleton,
+    /// [harvest] DELETES the reports it reads, so harvesting a store we do not own would
+    /// destroy another SDK's crashes. Crash reporters that are not KSCrash-based install their
+    /// own handlers and chain to ours.
     private static var installedBySDK = false
 
     init(store: GCRumSessionSnapshotStore) {
@@ -66,11 +66,10 @@ final class GCRumCrashReporter {
         config.reportStoreConfiguration.maxReportCount = 10
         // KSCrash's default rebinds __cxa_throw in every loaded image to record where a C++
         // exception was thrown. That reaches into code that throws and catches its own
-        // exceptions; Datadog turned it off after it broke such apps (dd-sdk-ios #2659). From
-        // KSCrash 2.6 a C++ crash still records where it was thrown: KSCrash works it out at
-        // terminate, into last_exception_backtrace, which the mapper reads. Below 2.6, which the
-        // version ranges still allow (Datadog pins 2.5.1), a throw from another image can leave
-        // the crash's stack empty or stale.
+        // exceptions, and can break apps that do. From KSCrash 2.6 a C++ crash still records
+        // where it was thrown: KSCrash works it out at terminate, into last_exception_backtrace,
+        // which the mapper reads. Below 2.6, which the version ranges still allow, a throw from
+        // another image can leave the crash's stack empty or stale.
         config.enableSwapCxaThrow = false
         return config
     }

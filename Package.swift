@@ -18,7 +18,7 @@ let package = Package(
     ],
     dependencies: [
         // The crash reporter's recorder, in the Flutter plugin's range. An exact pin would stop
-        // SwiftPM resolving this package beside one that pins its own (Datadog pins 2.5.1).
+        // SwiftPM resolving this package beside another package that pins its own version.
         .package(url: "https://github.com/kstenerud/KSCrash.git", "2.2.0"..<"3.0.0"),
         // For GroundcoverRumSwiftLog only. A range, for the same reason as KSCrash's.
         .package(url: "https://github.com/apple/swift-log.git", "1.5.0"..<"2.0.0"),

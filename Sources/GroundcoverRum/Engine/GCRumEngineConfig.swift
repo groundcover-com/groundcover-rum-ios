@@ -57,7 +57,7 @@ struct GCRumEngineConfig: Decodable {
     }
 
     struct Thresholds: Decodable {
-        /// The SDK's iOS hang default — Sentry's number. The host sends the same value
+        /// The SDK's iOS hang default — 2 s, a common default. The host sends the same value
         /// when it configures nothing; the two change together.
         ///
         /// NOT `GcRumEngineConfig.kt`'s 5_000: the platforms differ here on purpose,
@@ -184,8 +184,8 @@ struct GCRumEngineStatus: Encodable {
     var gesturesCoverAllSurfaces = false
 
     /// Why crash reporting is not running, when the host asked for it and we
-    /// could not oblige — in practice, another KSCrash user (Embrace, for
-    /// one) already owns the process-wide singleton.
+    /// could not oblige — in practice, another KSCrash-based reporter already
+    /// owns the process-wide singleton.
     ///
     /// `crashes: false` alone cannot say this: it reads identically to "the host
     /// never asked". The engine holds no logger by design, so it reports the

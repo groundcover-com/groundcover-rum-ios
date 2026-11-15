@@ -4,8 +4,8 @@ import Foundation
 // than reaching the engine, where a nonsense threshold would arm a watchdog that fires constantly
 // or never.
 
-/// The main-thread stall before an app hang is reported. Sentry's number: iOS has no system hang
-/// bar of its own.
+/// The main-thread stall before an app hang is reported: 2 s, a common default, since iOS has no
+/// system hang bar of its own.
 let defaultHangThresholdMs: Int64 = 2_000
 
 /// The longest a frame-vitals segment runs before it is closed anyway. A safety valve, not a

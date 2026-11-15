@@ -22,10 +22,8 @@ final class GCRumFrameAggregator {
 
     /// How late a frame must be to count as slow: one frame interval plus a vsync's
     /// tolerance. `1000 / (rate - 1)` rather than `1000 / rate`, so a frame landing a hair
-    /// after its deadline — which every frame does — is not called slow. Sentry's formula,
-    /// and where Datadog draws it.
-    /// Relative to the display, since a fixed 16.7ms bar would call a stuttering 120Hz
-    /// app healthy.
+    /// after its deadline — which every frame does — is not called slow. Relative to the
+    /// display, since a fixed 16.7ms bar would call a stuttering 120Hz app healthy.
     static func slowThresholdMs(refreshRateHz: Double) -> Double {
         // A 1Hz display does not exist, but the subtraction below divides by zero
         // there and the guard costs nothing.
@@ -77,9 +75,9 @@ final class GCRumFrameAggregator {
         let frozen: Int
         let refreshRate: Double
         /// Milliseconds lost across every slow frame — each one's duration beyond the frame budget,
-        /// summed. Sentry's Frames Delay, and an ABSOLUTE duration on purpose: a rate needs a
-        /// denominator, and the two platforms do not count the same frames, so no rate is
-        /// reported. Idle frames add exactly zero here.
+        /// summed. An ABSOLUTE duration on purpose: a rate needs a denominator, and the two
+        /// platforms do not count the same frames, so no rate is reported. Idle frames add exactly
+        /// zero here.
         let delayMs: Double
         /// The budget `slow` and `delayMs` were actually judged against, in milliseconds.
         ///
@@ -170,12 +168,12 @@ final class GCRumFrameAggregator {
         return close(endMs: nowMs, reason: .safety)
     }
 
-    /// Adds a HANG the frame sampler could not see as a synthetic frozen frame, so iOS stops
-    /// under-reporting hangs in `frames_frozen`. On iOS the `CADisplayLink` sampler runs on the
-    /// main thread — the exact thread a hang blocks — so a stall produces a GAP, not a long frame,
-    /// and the hang is invisible to the frame counters (Android gets this for free: FrameMetrics
-    /// charges an in-frame stall to the frame's `TOTAL_DURATION`). The hang watchdog, on its own
-    /// thread, catches every hang and feeds it here so the two detectors agree.
+    /// Adds a HANG the frame sampler could not see as a synthetic frozen frame, so hangs are
+    /// counted in `frames_frozen`. On iOS the `CADisplayLink` sampler runs on the main thread — the
+    /// exact thread a hang blocks — so a stall produces a GAP, not a long frame, and the hang is
+    /// invisible to the frame counters (Android gets this for free: FrameMetrics charges an
+    /// in-frame stall to the frame's `TOTAL_DURATION`). The hang watchdog, on its own thread,
+    /// catches every hang and feeds it here so the two detectors agree.
     ///
     /// - Note: the caller resets the sampler's frame clock after this so the natural giant
     ///   recovery-gap frame is not ALSO counted (see GCRumFrameTracker).

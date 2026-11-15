@@ -3,10 +3,10 @@ import UIKit
 /// SwiftUI buttons the accessibility tree can't name. SwiftUI draws no view per control and builds
 /// its accessibility tree only while the system's accessibility is on (VoiceOver, an automation
 /// client), so for most users a tap on a SwiftUI control finds no element. UIKit still holds the
-/// gesture SwiftUI attached: once a finger is down on a button (a NavigationLink is one too), one of
-/// the touch's gesture recognizers is named after its type (`Button<ResolvedButtonStyleBody<…>>`),
-/// and on some releases the touch's description names its `_ButtonGesture`. Datadog's SDK reads the
-/// same two. Neither is API: a release that renames them loses the name, never the tap.
+/// gesture SwiftUI attached: once a finger is down on a button (a NavigationLink is one too), one
+/// of the touch's gesture recognizers is named after its type
+/// (`Button<ResolvedButtonStyleBody<…>>`), and on some releases the touch's description names its
+/// `_ButtonGesture`. Neither is API: a release that renames them loses the name, never the tap.
 enum SwiftUIGestures {
     /// `target`, named as a SwiftUI button when nothing else named it: SwiftUI's type as the
     /// component and the role, with no label, as the browser reports an element that has no

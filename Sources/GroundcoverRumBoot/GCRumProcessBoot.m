@@ -127,10 +127,9 @@ BOOL GCRumBackgroundedBeforeFirstFrame(void) {
          atomic_load_explicit(&gSentToBackgroundBeforeFirstFrame, memory_order_relaxed);
 }
 
-/// Whether the system runs the process as the foreground app, from the task's role, as Datadog's
-/// launch handler reads it: a launch into the background runs as a background role until the user
-/// opens the app. A role that can't be read counts as foreground, so an unknown launch is still
-/// reported.
+/// Whether the system runs the process as the foreground app, from the task's role: a launch into
+/// the background runs as a background role until the user opens the app. A role that can't be
+/// read counts as foreground, so an unknown launch is still reported.
 static BOOL GCRumTaskIsForegroundApp(void) {
   task_category_policy_data_t policy;
   mach_msg_type_number_t count = TASK_CATEGORY_POLICY_COUNT;
@@ -167,9 +166,9 @@ __attribute__((constructor)) static void GCRumProcessBootInit(void) {
                 [GCRumFirstFrameObserver awaitFirstFrame];
               }];
 
-  // Sent to the background mid-launch, before the first frame: Sentry's app-start tracker drops the
-  // launch on this signal. A launch into the background never gets it, since the app was never in
-  // the foreground; the task role above covers that. Posted on the main thread, as the first-frame
+  // Sent to the background mid-launch, before the first frame: the launch is dropped on this
+  // signal. A launch into the background never gets it, since the app was never in the
+  // foreground; the task role above covers that. Posted on the main thread, as the first-frame
   // stamp is, so the two can't interleave.
   [[NSNotificationCenter defaultCenter]
       addObserverForName:@"UIApplicationDidEnterBackgroundNotification"

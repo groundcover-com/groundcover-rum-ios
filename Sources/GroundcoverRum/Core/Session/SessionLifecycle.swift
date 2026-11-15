@@ -131,8 +131,8 @@ final class SessionLifecycle {
             "[session-lifecycle] session id rotated", detail: ["from": previousId, "to": newId])
     }
 
-    // A session must never start after an event that belongs to it: the backend derives duration
-    // from (last event - session_start_time). So the start is the earliest trusted time among the
+    // A session must never start after an event that belongs to it: consumers derive its duration
+    // from last event - session_start_time. So the start is the earliest trusted time among the
     // clock, the triggering event (not in the pool yet), and whatever the flush left in the pool.
     // Candidates are trusted only within the tighter of the cap and the idle window, so a bogus-old
     // time can't open a session that is born already stale.

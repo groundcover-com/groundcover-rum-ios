@@ -5,9 +5,8 @@ import Foundation
 /// RN's iOS `Platform.constants` carries no hardware model — forceTouchAvailable, interfaceIdiom,
 /// isTesting, osVersion, reactNativeVersion, systemName, and nothing more — while its Android
 /// counterpart carries `Model`. Without this, `device.model` would be `"unknown"` on iOS.
-/// The identifier here (`"iPhone17,1"`) is
-/// what `uname()` reports and what Sentry and Datadog both send; it is deliberately NOT mapped to a
-/// marketing name ("iPhone 16 Pro"), which needs a lookup table that is stale the day a device
+/// The identifier here (`"iPhone17,1"`) is what `uname()` reports; it is deliberately NOT mapped to
+/// a marketing name ("iPhone 16 Pro"), which needs a lookup table that is stale the day a device
 /// ships.
 enum GCRumDeviceInfo {
     /// The hardware model identifier, or `""` when it cannot be determined.

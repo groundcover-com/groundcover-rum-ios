@@ -15,11 +15,10 @@ enum GCRumHangRules {
     static let heartbeatInterval: TimeInterval = 0.1
 
     /// How often the monitor thread looks at the heartbeat while waiting for a stall, for a
-    /// threshold: a fifth of it (as Sentry's watchdog), between 0.1 s and 1 s. It wakes its thread
-    /// every interval for the app's whole foreground life, so at the default 2 s threshold that is
-    /// 2.5 wakeups a second rather than ten. It only decides how soon a stall is noticed: waiting
-    /// for one to end goes at the heartbeat's interval, which is what keeps the duration as
-    /// precise as the heartbeat.
+    /// threshold: a fifth of it, between 0.1 s and 1 s. It wakes its thread every interval for the
+    /// app's whole foreground life, so at the default 2 s threshold that is 2.5 wakeups a second
+    /// rather than ten. It only decides how soon a stall is noticed: waiting for one to end goes at
+    /// the heartbeat's interval, which is what keeps the duration as precise as the heartbeat.
     static func monitorInterval(thresholdMs: Double) -> TimeInterval {
         min(max(thresholdMs / 5 / 1000, 0.1), 1.0)
     }

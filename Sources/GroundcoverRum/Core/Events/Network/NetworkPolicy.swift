@@ -17,9 +17,9 @@ struct NetworkPolicy {
     }
 
     /// Whether a request to `url` is captured: never the SDK's own upload, nor an `excludedUrls`
-    /// match. Capture may report a URL as given or normalized (OkHttp lowercases the host, drops a
-    /// default port and resolves dot segments), so the endpoint is matched both ways: captured,
-    /// each upload would fill the next batch, and an idle app would upload forever.
+    /// match. Capture may report a URL as given or normalized (an HTTP client may lowercase the
+    /// host, drop a default port and resolve dot segments), so the endpoint is matched both ways:
+    /// captured, each upload would fill the next batch, and an idle app would upload forever.
     func captures(_ url: String) -> Bool {
         guard enabled else { return false }
         if let normalizedEndpoint = normalizedUrl(endpoint), let normalized = normalizedUrl(url),

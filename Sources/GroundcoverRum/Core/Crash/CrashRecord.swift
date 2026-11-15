@@ -4,7 +4,7 @@ import Foundation
 /// device's disk, possibly written by another SDK version. Coerced, never dropped, apart from the
 /// ack key: each fallback is what the drain uses for an absent field.
 struct CrashRecord {
-    /// The ack key, and the backend's dedupe key.
+    /// The ack key, stable across redeliveries, so a duplicate can be recognised.
     var id: String
 
     /// When it crashed, or nil when the record lost it (the event then takes the time it is sent).

@@ -19,9 +19,9 @@ import ObjectiveC
 /// What is swizzled: `UIApplication.sendEvent(_:)` for touches (``NativeHooks/touches``),
 /// `UIViewController.viewDidAppear(_:)` and `viewDidDisappear(_:)` for screens
 /// (``NativeHooks/viewControllers``), and `URLSessionTask`'s `resume` and its private `setState:`
-/// for requests (``NativeHooks/urlSession``), the two Datadog's and Sentry's SDKs hook. No gesture
-/// recognizer or delegate proxy. A test installs a second swizzler before and after ours and
-/// checks every one runs, the original once.
+/// for requests (``NativeHooks/urlSession``), the two other network instrumentation hooks too. No
+/// gesture recognizer or delegate proxy. A test installs a second swizzler before and after ours
+/// and checks every one runs, the original once.
 enum Swizzle {
     /// Replaces `selector` on `cls` with `makeBlock(previous)`, an `@convention(block)` closure
     /// taking the receiver and then the method's arguments, and returns true. Returns false, and

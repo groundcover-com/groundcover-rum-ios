@@ -5,8 +5,8 @@ import Foundation
 // of its own, under the snapshot the engine filed at crash time. The current session never touches
 // these.
 //
-// At least once: the engine keeps a record until its batch is delivered, and the stable
-// `crash_report_id` lets the backend collapse a duplicate. Losing a fatal is far worse than
+// At least once: the engine keeps a record until its batch is delivered, and `crash_report_id` is
+// stable across redeliveries, so a duplicate can be recognised. Losing a fatal is far worse than
 // reporting it twice.
 
 /// Delivers every pending crash record, one at a time, acking each one delivered or unsalvageable;
@@ -111,7 +111,7 @@ private func attributes(of record: CrashRecord, privacy: EffectivePrivacy) -> [S
         mask ? redactingCauseMessages(redactObject(record.metadata, opts), opts) : record.metadata
     metadata["native"] = true
     metadata["fatal"] = true
-    // Stable across redeliveries: the backend's dedupe key.
+    // Stable across redeliveries, so a duplicate can be recognised.
     metadata["crash_report_id"] = record.id
     return [
         "error_type": type,
