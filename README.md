@@ -10,6 +10,12 @@ the same `/json/rum` format as [`@groundcover/browser`](https://www.npmjs.com/pa
 [`groundcover_rum`](https://pub.dev/packages/groundcover_rum) (Flutter), so iOS sessions land in the
 same RUM views as your web, React Native and Flutter sessions.
 
+This package is published to
+[`groundcover-rum-ios`](https://github.com/groundcover-com/groundcover-rum-ios), which each release
+writes from [`packages/ios`](https://github.com/groundcover-com/groundcover-rum/tree/main/packages/ios)
+in [groundcover-com/groundcover-rum](https://github.com/groundcover-com/groundcover-rum). Open issues
+and pull requests there.
+
 The SDK captures sessions, network requests with distributed tracing, screens, taps, gestures and
 text-field edits, handled errors, logs, custom events and user identity. Through a native engine
 compiled into the package it also captures **crashes, app hangs, app start and time to
@@ -58,12 +64,12 @@ for the product guide; this README is the iOS SDK's documentation.
 ## Install
 
 The SDK is a Swift package. In Xcode, choose **File → Add Package Dependencies…**, enter
-`https://github.com/groundcover-com/groundcover-rum-ios`, pick version `0.0.1-rc.1`, and add the
+`https://github.com/groundcover-com/groundcover-rum-ios`, pick version `0.0.1-rc.2`, and add the
 `GroundcoverRum` product to your app target. In a `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/groundcover-com/groundcover-rum-ios", from: "0.0.1-rc.1"),
+    .package(url: "https://github.com/groundcover-com/groundcover-rum-ios", from: "0.0.1-rc.2"),
 ],
 targets: [
     .target(

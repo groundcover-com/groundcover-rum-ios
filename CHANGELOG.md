@@ -4,6 +4,15 @@ All notable changes to `GroundcoverRum`, groundcover's iOS RUM SDK, are document
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and the
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
+## [0.0.1-rc.2] — 2026-11-15
+
+The third release candidate. No changes to the SDK's behaviour from `0.0.1-rc.1`.
+
+### Changed
+
+- **The README says where the source is.** This package is written from `packages/ios` in
+  [groundcover-com/groundcover-rum](https://github.com/groundcover-com/groundcover-rum) at each release, and issues and pull requests go there.
+
 ## [0.0.1-rc.1] — 2026-11-15
 
 The second release candidate. No changes to the SDK's behaviour from `0.0.1-rc.0`: source
